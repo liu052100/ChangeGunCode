@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ weapon.name }} 改枪码 - 三角洲改枪码库{% endblock %}
+{% block description %}{{ weapon.name }} 最新烽火地带改枪码分享，共 {{ weapon.code_count }} 个方案{% endblock %}
+{% block content %}
+<div class="breadcrumb">
+    <a href="/">首页</a><span>/</span>
+    {% if weapon.category %}<a href="/?category={{ weapon.category.slug }}">{{ weapon.category.name }}</a><span>/</span>{% endif %}
+    <span>{{ weapon.name }}</span>
+</div>
+<div class="weapon-header">
+    <div>
+        <h1 style="font-size:1.5rem;margin-bottom:var(--space-sm)">{{ weapon.name }}</h1>
+        <p style="color:var(--color-text-dim);font-size:0.875rem">共 {{ weapon.code_count }} 个改枪码方案</p>
+        <div style="margin-top:var(--space-md);display:flex;gap:var(--space-sm)">
+            <a href="/export/excel/{{ weapon.slug }}" class="btn btn-primary">导出 Excel</a>
+            <a href="{{ weapon.source_url }}" target="_blank" class="btn btn-outline">查看原始来源</a>
+        </div>
+    </div>
+</div>
+<div style="display:flex;gap:var(--space-sm);margin-bottom:var(--space-md)">
+    <button class="btn btn-outline" hx-get="/api/partials/codes/{{ weapon.slug }}?sort=copy_count" hx-target="#code-table-body">按复制量排序</button>
+    <button class="btn btn-outline" hx-get="/api/partials/codes/{{ weapon.slug }}?sort=likes" hx-target="#code-table-body">按点赞排序</button>
+    <button class="btn btn-outline" hx-get="/api/partials/codes/{{ weapon.slug }}?sort=value" hx-target="#code-table-body">按价值排序</button>
+</div>
+<div class="table-responsive">
+    <table class="code-table">
+        <thead><tr><th>改枪码</th><th>描述</th><th>价值</th><th>复制次数</th><th>点赞</th><th>模式</th><th>操作</th></tr></thead>
+        <tbody id="code-table-body">{% include "partials/code_table.html" %}</tbody>
+    </table>
+</div>
+{% endblock %}

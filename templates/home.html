@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}三角洲改枪码库 - 烽火地带改枪方案大全{% endblock %}
+{% block content %}
+<div class="layout-grid">
+    <div class="main-content">
+        <div class="category-tabs">
+            <button class="category-tab active" hx-get="/api/partials/weapons" hx-target="#weapon-grid">全部</button>
+            {% for cat in categories %}
+            <button class="category-tab" hx-get="/api/partials/weapons?category={{ cat.slug }}" hx-target="#weapon-grid">{{ cat.name }}</button>
+            {% endfor %}
+        </div>
+        <div id="weapon-grid">
+            {% include "partials/weapon_grid.html" %}
+        </div>
+    </div>
+    <div class="sidebar">
+        {% if stations %}
+        <div class="sidebar-panel">
+            <div class="panel-title">特勤处制造推荐</div>
+            {% for s in stations %}
+            <div class="station-item">
+                <div>
+                    <div class="station-name">{{ s.station_name }}</div>
+                    <div>{{ s.item_name }}</div>
+                </div>
+                <div class="station-profit">{{ "{:,}".format(s.hourly_profit) }}/h</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if event %}
+        <div class="sidebar-panel event-banner">
+            <div class="event-title">{{ event.title }}</div>
+            {% if event.countdown_hours is not none %}
+            <div style="font-size:0.75rem;color:var(--color-text-dim);margin-top:var(--space-xs)">
+                倒计时: {{ event.countdown_hours // 24 }}天{{ event.countdown_hours % 24 }}时
+            </div>
+            {% endif %}
+            {% if event.items %}
+            <div class="event-items">
+                {% for item in event.items %}
+                <span style="background:var(--bg-base);padding:4px 8px;border-radius:4px;font-size:0.8rem">{{ item }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        <div class="sidebar-panel">
+            <div class="panel-title">数据导出</div>
+            <a href="/export/excel" class="btn btn-primary" style="width:100%;justify-content:center">导出全部数据到 Excel</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

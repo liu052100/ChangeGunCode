@@ -1,0 +1,10 @@
+<div class="weapon-grid">
+    {% for w in weapons %}
+    <a href="/weapons/{{ w.slug }}" class="weapon-card">
+        <div class="weapon-name">{{ w.name }}</div>
+        <div class="code-count">{{ w.code_count }} 个改枪码</div>
+    </a>
+    {% else %}
+    <p style="color:var(--color-text-dim);grid-column:1/-1;text-align:center;padding:var(--space-xl)">暂无武器数据，请先运行爬虫</p>
+    {% endfor %}
+</div>

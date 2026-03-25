@@ -1,0 +1,13 @@
+{% for c in codes %}
+<tr>
+    <td><span class="code-value">{{ c.code }}</span>{% if c.is_hot %}<span class="badge-hot">热门</span>{% endif %}</td>
+    <td>{{ c.description or '-' }}</td>
+    <td>{{ c.value or '-' }}</td>
+    <td>{{ "{:,}".format(c.copy_count) }} 次</td>
+    <td>{{ c.likes }}</td>
+    <td style="font-size:0.75rem;color:var(--color-text-dim)">{{ c.game_mode or '烽火地带' }}</td>
+    <td><button class="btn btn-primary" onclick="copyCode('{{ c.code }}')">复制</button></td>
+</tr>
+{% else %}
+<tr><td colspan="7" style="text-align:center;color:var(--color-text-dim);padding:var(--space-xl)">暂无改枪码数据</td></tr>
+{% endfor %}

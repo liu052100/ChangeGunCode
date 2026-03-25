@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}三角洲改枪码库{% endblock %}</title>
+    <meta name="description" content="{% block description %}三角洲行动烽火地带改枪码大全，定时同步更新{% endblock %}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="site-logo">三角洲改枪码库</a>
+            <div class="search-box">
+                <input type="text" placeholder="搜索武器名称..."
+                       hx-get="/api/partials/weapons"
+                       hx-trigger="keyup changed delay:300ms"
+                       hx-target="#weapon-grid"
+                       hx-include="this"
+                       name="search">
+            </div>
+            <span class="update-time">
+                {% if last_scrape %}
+                    数据更新于 {{ last_scrape.strftime('%m-%d %H:%M') }}
+                {% else %}
+                    暂无数据
+                {% endif %}
+            </span>
+        </div>
+    </header>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+    <div id="toast" class="toast"></div>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
